@@ -1,0 +1,35 @@
+{% load static %}<html ng-app="sudokuApp">
+<head>
+  <title>Sudoku</title>
+  <link rel="stylesheet" href="{%static "styles.css"%}">
+  <script src="{%static "angular.js"%}"></script>
+  <script src="{%static "sudoku.js"%}"></script>
+  <meta charset="UTF-8">
+</head>
+<body >
+{% verbatim %}
+<div class="sudoku" ng-controller="sudokuController">
+    <div ng-repeat="row in rows" class="row">
+      <span class="rowlabel">
+      </span>
+      <span ng-repeat="cell in row.cells" class="cell" ng-click="onCellClicked(cell)" onselectstart="return false;">
+	{{cell.symbol}}
+      </span>
+    </div>
+</div>
+
+<div class="symbols" ng-controller="symbolsController">
+    <div ng-repeat="row in rows">
+      <span ng-repeat="cell in row.cells" class="box" ng-class="{selected: selectedSymbol==cell.symbol}" ng-click="onSymbolClicked(cell)" onselectstart="return false;">
+	{{cell.symbol}}
+      </span>
+    </div>
+    <div class='box' ng-class="{selected: selectedSymbol=='?'}" ng-click="onSymbolClicked(emptyCell)" onselectstart="return false;">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+  <div>
+</div>
+</div>
+{% endverbatim %}
+</body>
+</html>

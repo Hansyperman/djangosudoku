@@ -1,0 +1,75 @@
+body {	
+  min-width:800px;
+  background:url(background.jpg);
+  background-size:100%;
+  background-repeat: no-repeat;
+  display:grid;
+}
+
+.box{
+    background: #E1E1FB;
+    border-radius:8px;
+    border:1px solid #A0A0A0;
+    display:inline-block;
+    font-size:140%;
+    margin:5px;
+    padding:1em;
+    text-align:center;
+    opacity:.9;
+}
+
+.box:hover {
+    background: #F1F1FB;
+    border: 3px solid #808080;
+    margin:3px;
+}
+
+.selected{
+    border:3px solid black;
+    margin:3px;
+}
+
+.symbols {
+    grid-column-start:2;
+    grid-row-start:1;
+}
+
+.rowlabel {
+  display:inline-block;
+  width:3em;
+  height:1.5em;
+}
+
+.cell{
+  background: #E0E0E0;
+  border:1px solid black;
+  border-width:1px 1px 0px 0px;
+  display:inline-block;
+  width:3em;
+  padding-top:1em ;
+  padding-bottom:1em ;
+  text-align:center;
+  opacity:0.9;
+}
+.cell:hover{
+  background: #E8E8E8;
+}
+.cell:nth-child(3n+2){
+  border-left-width:3px;
+}
+.cell:last-child  {
+  border-right-width:3px; 
+}
+.row:nth-child(3n+1) .cell{
+  border-top-width:3px;
+}
+.row:last-child .cell {
+  border-bottom-width:3px; 
+}
+
+.sudoku {
+grid-column-start:1;
+grid-row-start:1;
+grid-column-end:1;
+grid-row-end:span 2;
+}

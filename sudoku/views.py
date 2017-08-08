@@ -12,11 +12,24 @@ def index(request):
     return render(request, 'sudoku/index.html', context)
 
 
+def map_json_to_sudoku(in_json):
+    dimension2 = len(in_json['sudoku'])
+    sudoku = Sudoku(dimension2)
+    for i in range(dimension2):
+        for j in range(dimension2):
+            sudoku.set(i, j, str(in_json['sudoku'][i]['cells'][j]['symbol']))
+    return sudoku
+
+
+def map_sudoku_to_json(sudoku):
+    return [{'cells': [{'symbol': sudoku.get(i, j), 'valid': sudoku.validate(i, j)} for j in range(sudoku.dimension2)]} for i in range(sudoku.dimension2)]
+
+
 def verify(request):
     try:
         jsonsudoku = json.loads(request.body)
-        sudoku = Sudoku()
-        jsonsudoku['sudoku'][0]['cells'][0]['symbol'] = 3
+        sudoku = map_json_to_sudoku(jsonsudoku)
+        jsonsudoku['sudoku'] = map_sudoku_to_json(sudoku)
         return JsonResponse(jsonsudoku)
     except:
         traceback.print_exc(file=sys.stdout)

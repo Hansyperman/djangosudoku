@@ -15,7 +15,7 @@
     <div ng-repeat="row in rows" class="row">
       <span class="rowlabel">
       </span>
-      <span ng-repeat="cell in row.cells" class="cell" ng-click="onCellClicked(cell)" onselectstart="return false;">
+      <span ng-repeat="cell in row.cells" class="cell" ng-click="onCellClicked(cell)" ng-class="{invalid: !cell.valid}" onselectstart="return false;">
 	{{cell.symbol}}
       </span>
     </div>

@@ -51,6 +51,11 @@ body {
   text-align:center;
   opacity:0.9;
 }
+
+.invalid {
+  color:red;
+}
+
 .cell:hover{
   background: #E8E8E8;
 }

@@ -67,10 +67,11 @@ sudokuApp.controller('sudokuController', function sudokuController($scope, selec
         };
         for (j = 0; j < dimension2; j++) {
             var cell = {
-                symbol: symbol
+                symbol: symbol,
+                valid:true
             };
             row.cells.push(cell);
-            symbol = (symbol % 7) + 1;
+            symbol = '?';//(symbol % 9) + 1;
         }
         $scope.rows.push(row);
     }
@@ -84,6 +85,7 @@ sudokuApp.controller('sudokuController', function sudokuController($scope, selec
                 for (var j = 0; j < dimension2; j++) {
                     cell = response.data.sudoku[i].cells[j];
                     $scope.rows[i].cells[j].symbol = cell.symbol;
+                    $scope.rows[i].cells[j].valid= cell.valid;
                 }
             }
         });

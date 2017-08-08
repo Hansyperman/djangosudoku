@@ -20,6 +20,6 @@ from django.views.generic import TemplateView
 from . import views
 
 
-urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+[
+urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'sudoku/', include('sudoku.urls')),
 ]

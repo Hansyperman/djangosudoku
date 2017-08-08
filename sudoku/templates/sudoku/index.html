@@ -1,9 +1,12 @@
-{% load static %}<html ng-app="sudokuApp">
+{% load static %}<!DOCTYPE html>
+<html ng-app="sudokuApp">
 <head>
   <title>Sudoku</title>
   <link rel="stylesheet" href="{%static "styles.css"%}">
+  <script type="text/javascript">var csrfmiddlewaretoken="{{ csrf_token }}"</script>
   <script src="{%static "angular.js"%}"></script>
   <script src="{%static "sudoku.js"%}"></script>
+
   <meta charset="UTF-8">
 </head>
 <body >

@@ -9,19 +9,21 @@ Assuming you know how to play sudoku, core concepts are:
 """
 
 import copy
+import random
 from math import sqrt
 
 symbols = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
-invalid_symbol = '?'
+invalid_symbol = '.'
 
 
 class Cell:
 
-    def __init__(self):
+    def __init__(self,i,j):
         self.choices = copy.copy(symbols)
         self.value = invalid_symbol
-
+	self.at=i,j
+	
     def __str__(self):
         return self.value + str(self.choices)
 
@@ -44,7 +46,13 @@ class Cell:
     def validate(self):
         return self.value == invalid_symbol or self.value in self.choices
 
-
+    def solve(self):
+	if len(self.choices)==1:
+	  self.set(self.choices[0])
+	  return True
+	else:
+	  return False
+	
 class Sudoku:
 
     def groups(self, i, j):
@@ -60,7 +68,7 @@ class Sudoku:
 
     def __init__(self, dimension2):
         self.dimension2 = dimension2
-        self.grid = [[Cell() for j in range(dimension2)]
+        self.grid = [[Cell(i,j) for j in range(dimension2)]
                      for i in range(dimension2)]
         for i in range(dimension2):
             for j in range(dimension2):
@@ -74,7 +82,53 @@ class Sudoku:
         if symbol in symbols or symbol == invalid_symbol:
             self.grid[i][j].set(symbol)
         else:
-            raise "Invalid symbol"
+            raise Exception("Invalid symbol")
 
     def validate(self, i, j):
         return self.grid[i][j].validate()
+
+    def setall(self,line):
+	if self.dimension2*self.dimension2<>len(line):
+	    raise Exception(" invalid size")
+	for i in range(self.dimension2):
+	  for j in range(self.dimension2):
+	    s=line[j+i*self.dimension2]
+	    if s in symbols:
+	      self.set(i,j,s)
+
+    def solve(self):
+	#worklist = all cells not yet solved. Random order  so we dont always stabilize on the same solution
+	worklist=reduce(list.__add__,self.grid)
+	random.shuffle(worklist)
+	return self.solve_worklist(worklist)
+
+    def solve_worklist(self,worklist):
+	#Resolve what we know
+	while True:
+	  newworklist=[]
+	  for cell in worklist:
+	      if len(cell.choices)==0:
+		return False
+	      if not cell.solve():
+		newworklist.append(cell)	      
+	  if len(worklist)==0:
+	      return True
+	  if len(worklist)==len(newworklist):
+	    break
+	  worklist=newworklist
+	
+	#Simple resolution does not work. Take an easy cell an try all possibilities.
+	easypos,minlen=0,len(symbols)
+	for i in range(len(worklist)):
+	  l=len(worklist[i].choices)
+	  if l<minlen:
+	    easypos,minlen=i,l
+
+	for choice in worklist[easypos].choices: 
+	  clone=copy.deepcopy(worklist)
+	  clone[easypos].set(choice)
+	  if self.solve_worklist(clone):
+	    for i in range(len(worklist)):
+	      worklist[i].set(clone[i].value)
+	    return True
+	return False

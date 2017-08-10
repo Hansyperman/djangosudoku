@@ -8,5 +8,6 @@ from . import views
 urlpatterns = static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + [
     url(r'^$', views.index, name='index'),
     url(r'^verify.json$', views.verify, name='verify'),
+    url(r'^generate.json$', views.generate, name='generate'),
     #//    url(r'^.*$', RedirectView.as_view(url='/', permanent=False), name='redirect'),
 ]

@@ -12,6 +12,7 @@
 <body >
 {% verbatim %}
 <div class="sudoku" ng-controller="sudokuController">
+  <div>
     <div ng-repeat="row in rows" class="row">
       <span class="rowlabel">
       </span>
@@ -19,8 +20,10 @@
 	{{cell.symbol}}
       </span>
     </div>
+  </div>
+  <br/>
+    <input type='button' value='New sudoku' ng-click="onNewSudoku()">
 </div>
-
 <div class="symbols" ng-controller="symbolsController">
     <div ng-repeat="row in rows">
       <span ng-repeat="cell in row.cells" class="box" ng-class="{selected: selectedSymbol==cell.symbol}" ng-click="onSymbolClicked(cell)" onselectstart="return false;">
@@ -30,9 +33,7 @@
     <div class='box' ng-class="{selected: selectedSymbol=='?'}" ng-click="onSymbolClicked(emptyCell)" onselectstart="return false;">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
-  <div>
-</div>
-</div>
+<div>
 {% endverbatim %}
 </body>
 </html>

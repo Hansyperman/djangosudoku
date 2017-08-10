@@ -5,7 +5,7 @@ import json
 import sys
 import traceback
 from business import Sudoku
-
+import time
 
 def index(request):
     context = []
@@ -26,10 +26,20 @@ def map_sudoku_to_json(sudoku):
 
 
 def verify(request):
-    try:
         jsonsudoku = json.loads(request.body)
         sudoku = map_json_to_sudoku(jsonsudoku)
         jsonsudoku['sudoku'] = map_sudoku_to_json(sudoku)
+        return JsonResponse(jsonsudoku)
+ 
+def generate(request):
+    try:
+        jsonsudoku = json.loads(request.body)
+	dimension2 = len(jsonsudoku['sudoku'])
+	sudoku = Sudoku(dimension2)
+	start=time.time()
+	sudoku.solve()
+        jsonsudoku['sudoku'] = map_sudoku_to_json(sudoku)
+        print 'time',time.time()-start 
         return JsonResponse(jsonsudoku)
     except:
         traceback.print_exc(file=sys.stdout)

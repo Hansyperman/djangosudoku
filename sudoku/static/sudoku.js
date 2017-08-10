@@ -103,4 +103,12 @@ sudokuApp.controller('sudokuController', function sudokuController($scope, selec
         }        
         $http.post('generate.json', data).then($scope.handleSudokuResponce);
     }
+    
+    $scope.onSolve= function(){	
+        data = {
+            sudoku: $scope.rows
+        }        
+        $http.post('solve.json', data).then($scope.handleSudokuResponce);
+    }
+
 });

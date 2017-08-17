@@ -2,10 +2,10 @@
 <html ng-app="sudokuApp">
 <head>
   <title>Sudoku</title>
-  <link rel="stylesheet" href="{%static "styles.css"%}">
+  <link type="text/css" rel="stylesheet" href="{%static "styles.css"%}">
   <script type="text/javascript">var csrfmiddlewaretoken="{{ csrf_token }}"</script>
-  <script src="{%static "angular.js"%}"></script>
-  <script src="{%static "sudoku.js"%}"></script>
+  <script type="text/javascript" src="{%static "angular.js"%}"></script>
+  <script type="text/javascript" src="{%static "sudoku.js"%}"></script>
 
   <meta charset="UTF-8">
 </head>
@@ -14,8 +14,6 @@
 <div class="sudoku" ng-controller="sudokuController">
   <div>
     <div ng-repeat="row in rows" class="row">
-      <span class="rowlabel">
-      </span>
       <span ng-repeat="cell in row.cells" class="cell" ng-click="onCellClicked(cell)" ng-class="{invalid: !cell.valid}" onselectstart="return false;">
 	{{cell.symbol}}
       </span>
@@ -34,7 +32,7 @@
     <div class='box' ng-class="{selected: selectedSymbol=='?'}" ng-click="onSymbolClicked(emptyCell)" onselectstart="return false;">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
-<div>
+</div>
 {% endverbatim %}
 </body>
 </html>

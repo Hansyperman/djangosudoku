@@ -1,7 +1,7 @@
 var sudokuApp = angular.module('sudokuApp', []);
 var dimension = 3;
 var dimension2 = dimension * dimension;
-var emptySymbol='.';
+var emptySymbol = '.';
 
 //Thanks to https://stackoverflow.com/questions/18156452/django-csrf-token-angularjs
 sudokuApp.config(['$httpProvider', function($httpProvider) {
@@ -33,7 +33,7 @@ sudokuApp.controller('symbolsController', function symbolsController($scope, sel
         };
         for (j = 0; j < dimension; j++) {
             row.cells.push({
-                symbol: symbol+''
+                symbol: symbol + ''
             });
             symbol++;
         }
@@ -59,32 +59,16 @@ sudokuApp.controller('symbolsController', function symbolsController($scope, sel
  *  It is responsible for storing and editing the current sudoku, and for commmunicating with the back end
  */
 sudokuApp.controller('sudokuController', function sudokuController($scope, selectedSymbolService, $http) {
-    $scope.rows = [];
-    for (i = 0; i < dimension2; i++) {
-        var row = {
-            name: String.fromCharCode("A".charCodeAt(0) + i),
-            cells: []
-        };
-        for (j = 0; j < dimension2; j++) {
-            var cell = {
-                symbol: emptySymbol,
-                valid:true
-            };
-            row.cells.push(cell);
+    $scope.handleSudokuResponce = function(response) {
+        for (var i = 0; i < dimension2; i++) {
+            for (var j = 0; j < dimension2; j++) {
+                cell = response.data.sudoku[i].cells[j];
+                $scope.rows[i].cells[j].symbol = cell.symbol;
+                $scope.rows[i].cells[j].valid = cell.valid;
+            }
         }
-        $scope.rows.push(row);
     }
 
-    $scope.handleSudokuResponce=function(response){
-            for (var i = 0; i < dimension2; i++) {
-                for (var j = 0; j < dimension2; j++) {
-                    cell = response.data.sudoku[i].cells[j];
-                    $scope.rows[i].cells[j].symbol = cell.symbol;
-                    $scope.rows[i].cells[j].valid= cell.valid;
-                }
-            }
-    }
-    
     $scope.validate = function() {
         data = {
             sudoku: $scope.rows
@@ -96,19 +80,37 @@ sudokuApp.controller('sudokuController', function sudokuController($scope, selec
         cell.symbol = selectedSymbolService.selectedSymbol;
         $scope.validate();
     }
-    
-    $scope.onNewSudoku = function(){	
+
+    $scope.onNewSudoku = function() {
         data = {
             sudoku: $scope.rows
-        }        
+        }
         $http.post('generate.json', data).then($scope.handleSudokuResponce);
     }
-    
-    $scope.onSolve= function(){	
+
+    $scope.onSolve = function() {
         data = {
             sudoku: $scope.rows
-        }        
+        }
         $http.post('solve.json', data).then($scope.handleSudokuResponce);
     }
 
+    
+        $scope.rows = [];
+    for (i = 0; i < dimension2; i++) {
+        var row = {
+            name: String.fromCharCode("A".charCodeAt(0) + i),
+            cells: []
+        };
+        for (j = 0; j < dimension2; j++) {
+            var cell = {
+                symbol: emptySymbol,
+                valid: true
+            };
+            row.cells.push(cell);
+        }
+        $scope.rows.push(row);
+    }
+
+    $scope.onNewSudoku()
 });

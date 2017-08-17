@@ -12,7 +12,7 @@ Assuming you know how to play sudoku, core concepts are:
 import copy
 import random
 import math
-
+from functools import reduce
 symbols = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 invalid_symbol = '.'
@@ -36,7 +36,7 @@ class Cell:
         # groups
         for group in self.groups:
             for cell in group:
-                if cell <> self and symbol in cell.choices:
+                if cell != self and symbol in cell.choices:
                     cell.choices.remove(symbol)
         # If it was a valid choice, it is the only one
         if self.value in self.choices:
@@ -59,8 +59,8 @@ class Sudoku:
 
     def groups(self, i, j):
         dimension = int(math.sqrt(self.dimension2))
-        bloki = i / dimension * dimension
-        blokj = j / dimension * dimension
+        bloki = i // dimension * dimension
+        blokj = j // dimension * dimension
         return [
             [self.grid[i][k] for k in range(self.dimension2)],  # horizontal
           [self.grid[k][j] for k in range(self.dimension2)],  # vertical
@@ -89,18 +89,18 @@ class Sudoku:
     def validate(self, i, j):
         return self.grid[i][j].validate()
 
-    def make_solvable(self):
-        # Make as many cells blankas possible
+    def add_whitespace(self):
+        # Make as many cells blank as possible, but guarantee the sudoku has a
+        # solution
         all_cells = reduce(list.__add__, self.grid)
         random.shuffle(all_cells)
         for clean in all_cells:
             child = Sudoku(self.dimension2)
             for cell in all_cells:
-                if cell != clean and cell.value <> invalid_symbol:
+                if cell != clean and cell.value != invalid_symbol:
                     child.set(cell.at[0], cell.at[1], cell.value)
             if child.simple_solve(reduce(list.__add__, child.grid)):
                 clean.set(invalid_symbol)
-            print "post", child
 
     def solve(self):
         # Try to find 1 solution to the sudoku, ignoring all others
@@ -122,7 +122,6 @@ class Sudoku:
             if len(worklist) == 0:
                 return True
             if len(worklist) == len(newworklist):
-                print "no advance", worklist
                 return False
 
     def solve_worklist(self, worklist):

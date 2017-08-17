@@ -7,7 +7,9 @@ import traceback
 from .business import Sudoku
 import time
 
-#Helpers to convert to and from json format
+# Helpers to convert to and from json format
+
+
 def map_json_to_sudoku(in_json):
     dimension2 = len(in_json['sudoku'])
     sudoku = Sudoku(dimension2)
@@ -20,7 +22,9 @@ def map_json_to_sudoku(in_json):
 def map_sudoku_to_json(sudoku):
     return [{'cells': [{'symbol': sudoku.get(i, j), 'valid': sudoku.validate(i, j)} for j in range(sudoku.dimension2)]} for i in range(sudoku.dimension2)]
 
-#The actual views
+# The actual views
+
+
 def index(request):
     context = {}
     return render(request, 'sudoku/index.html', context)
